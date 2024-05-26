@@ -22,3 +22,7 @@ deploy:
       - lint-kubeconform
     script:
      - echo "Deployed to Cluster"
+    rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: always
+    - when: never
