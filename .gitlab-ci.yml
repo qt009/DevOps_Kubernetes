@@ -18,5 +18,7 @@ lint-kubeconform:
 
 deploy:
     stage: deploy
+    dependencies:
+      - lint-kubeconform
     script:
      - echo "Deployed to Cluster"
