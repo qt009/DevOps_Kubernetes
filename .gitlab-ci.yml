@@ -14,7 +14,7 @@ lint-kubeconform:
     name: ghcr.io/yannh/kubeconform:latest-alpine
     entrypoint: [""]
   script:
-  - /kubeconform -summary -output json kubeconfigs/
+  - /kubeconform -summary -output json manifests/
 
 deploy:
     stage: deploy
