@@ -1,0 +1,19 @@
+stages:
+  - build
+  - test
+
+build:
+  stage: build
+  script:
+    - echo "Building the application..."
+
+test:
+  stage: test
+  script:
+    - echo "Running tests..."
+
+deploy:
+    stage: deploy
+    image: alpine/kubectl:latest
+    script:
+     - echo "Deployed to Cluster"
