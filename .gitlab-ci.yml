@@ -15,6 +15,5 @@ test:
 
 deploy:
     stage: deploy
-    image: alpine/kubectl:latest
     script:
      - echo "Deployed to Cluster"
