@@ -8,10 +8,13 @@ build:
   script:
     - echo "Building the application..."
 
-test:
+lint-kubeconform:
   stage: test
+  image:
+    name: ghcr.io/yannh/kubeconform:latest-alpine
+    entrypoint: [""]
   script:
-    - echo "Running tests..."
+  - /kubeconform -summary -output json kubeconfigs/
 
 deploy:
     stage: deploy
