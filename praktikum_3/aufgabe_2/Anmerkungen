@@ -1,0 +1,41 @@
+1- steps:
+apply configmap_dev
+apply deployment
+define NodePort service to expose the app
+port-forward to access the app via the service
+
+2-
+editing configmaps:
+kubectl edit configmaps <configmap-name>
+
+php changes automatic updates? -> No, I need to delete the pods and refresh my page
+command: kubectl delete pod -l app=webapp-deployment (delete pods with label app=webapp-deployment, they are then replaced by new pods automatically)
+
+env-configmap changes: aren't allowed since immutable: true in the configmap
+
+3- Konfigurationen mit kleinen Unterschieden in verschiedenen Umgebungen. Warum nützlich?
+-> Imagine test vs production environments. Configurations with minimal differences allow us to have two really similar environments for dev and prod, which enables one to detect bugs/mistakes early on and prevent them from happening in the production in the first place
+
+4- Erstellung von Secrets:
+die Key-Value Paare werden als einzelne Dateien im spezifierten Verzeichnis abgelegt und im Bedarfsfall werden von dort gelesen
+
+5-
+Sicherheit via Secrets:
++ Zentrale Verwaltung von sensiblen Daten anstatt in Konfigurationsdateien
++ Vermeidung von Festplattenzugriff: im etcd-backend gespeichert und wenn gewünscht nur auf dem RAM von pods verfuegbar
++ Zugriffssteuerung mittels RBAC
+
+Secrets Grenzen: 
+- By default unverschluesselt und gespeichert im Klartext
+- alle Prozesse innerhalb eines Pods haben Zugriff aufs Secret
+
+Weitere Massnahmen:
+- Verschluesselung der Secrets im etcd-backend (siehe secrets_verschluesselung_beispiel Datei)
+- sichere Netzwerkkommunikation mittels z.B. TLS
+- Verwendung von Security Contexts und PodSecurityPolicies: Den Pods den minimalen erforderlichen Zugriff gewaehrleisten
+
+Aufgaben eines Administrators:
+- Konfiguration und Verwaltung von RBAC und Netzwerksicherheitsrichtlinien
+- Aktivierung und Verwaltung von Verschluesselung
+- Ueberwachung und Auditierung
+

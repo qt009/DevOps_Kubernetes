@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: env-configmap
+  namespace: kubermates
+data:
+  message: "Welcome K8s Enthusiast to my running Alpine Workload!"
+  stage: "DEV"
+immutable: true
