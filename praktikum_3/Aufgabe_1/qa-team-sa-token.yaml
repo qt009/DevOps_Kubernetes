@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: qa-team-sa-token
+  namespace: qa-team
+  annotations:
+    kubernetes.io/service-account.name: qa-team-sa
+type: kubernetes.io/service-account-token
+

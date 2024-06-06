@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qa-deployment
+  namespace: test-team-2
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: qaapp
+  template:
+    metadata:
+      labels:
+        app: qaapp
+    spec:
+      containers:
+      - name: qaapp-container
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+

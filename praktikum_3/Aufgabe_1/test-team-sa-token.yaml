@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: test-team-sa-token
+  namespace: test-team
+  annotations:
+    kubernetes.io/service-account.name: test-team-sa
+type: kubernetes.io/service-account-token
+
