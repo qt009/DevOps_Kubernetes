@@ -1,5 +1,3 @@
-# Rechtschreibung überprüfen
-
 ## Aufgabe 2 - Persistent Volumes
 
 ### 1. Local Volume vorbereiten
