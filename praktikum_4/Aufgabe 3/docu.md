@@ -30,7 +30,7 @@
     - Löschen Sie die Pods (nicht das StatefulSet) und warten Sie, bis die Pods wieder laufen.
         - `kubectl delete pod <pod-name>`
     - Überprüfen Sie nochmals mittels `curl`, dass die nginx Webserver ihre modifizierten Daten ausliefern.
-        - ![Screenshot]('Screenshot 2024-06-13 214919.png')
+        - ![Screenshot 2024-06-13 214919.png]('Screenshot 2024-06-13 214919.png')
 
 4. **Skalierung**
     - Skalieren Sie das StatefulSet auf 4 Replicas, dann auf 1 Replica und schließlich wieder auf 2 Replicas.
