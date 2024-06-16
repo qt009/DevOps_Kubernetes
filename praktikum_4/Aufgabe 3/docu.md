@@ -13,17 +13,24 @@
         - [k8s_stateful_set_create_2_replicas.yaml](k8s_stateful_set_create_2_replicas.yaml)
     - Beachten Sie dabei die [StatefulSet Limitations](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#limitations).
     - Provisionieren Sie bereits vorab 4 entsprechende PVs (Persistent Volumes).
+        - [k8s_add_pc_and_pvc.yaml](k8s_add_pc_and_pvc.yaml)
     - Denken Sie an die Erstellung eines Headless Service.
+        - [k8s_stateful_set_create_headless_service.yaml](k8s_stateful_set_create_headless_service.yaml)
 
 2. **Implementierung**
-    - Kontrollieren Sie die erfolgreiche Provisionierung Ihrer Ressourcen mittels `kubectl`.
-    - Beobachten Sie beim Deployment der Pods des StatefulSets die geordnete und sequentielle Reihenfolge der Instantiierung.
+    - Kontrollieren Sie die erfolgreiche Provisionierung Ihrer Ressourcen mittels `kubectl get all` und `get pvc`.
+    - Ich musste noch ein nginx-service yaml geschrieben auf Grund von Verbindungsproblemen: [nginx-service.yaml](nginx-service.yaml)
 
 3. **Laufzeitmodifikationen**
     - Verändern Sie die `index.html` Ihrer nginx Instanzen zur Laufzeit, indem Sie z.B. einen bestimmten String in die jeweilige `index.html` injecten.
+        - `kubectl exec -it <pod-name> -- /bin/sh` und `echo "Modified content" > /usr/share/nginx/html/index.html`
     - Kontrollieren Sie mittels `curl`, dass die nginx Webserver ihre modifizierten Daten ausliefern.
+        - Ich musste port-forwarding machen, da es Probleme mit dem Netzwerk gab.
+        - `kubectl port-forward svc/nginx-service 8080:80`
     - Löschen Sie die Pods (nicht das StatefulSet) und warten Sie, bis die Pods wieder laufen.
+        - `kubectl delete pod <pod-name>`
     - Überprüfen Sie nochmals mittels `curl`, dass die nginx Webserver ihre modifizierten Daten ausliefern.
+        - ![Screenshot]('Screenshot 2024-06-13 214919.png')
 
 4. **Skalierung**
     - Skalieren Sie das StatefulSet auf 4 Replicas, dann auf 1 Replica und schließlich wieder auf 2 Replicas.
