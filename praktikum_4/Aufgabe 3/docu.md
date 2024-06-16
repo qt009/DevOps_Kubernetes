@@ -61,7 +61,7 @@
         2. Erhalt der Reihenfolge und Identität: Die Pods eines StatefulSets behalten ihre Identität (z.B. nginx-0, nginx-1), was wichtig für zustandsbehaftete Anwendungen ist.
         3. Partitionsstrategie: man kann die partition-Option verwenden, um anzugeben, welche Pods aktualisiert werden sollen. Wenn die Partition z.B. auf 1 gesetzt ist, wird nur der Pod nginx-1 aktualisiert und nginx-0 bleibt unverändert, bis die Partition auf 0 gesetzt wird.
 
-    - **Unterschiede zwischen StatefulSet und Deployment:**
+    - Unterschiede zwischen StatefulSet und Deployment:
         - StatefulSet: Beibehaltung der Pod-Identität und stabiler Speicher
         - Deployment: Flexible Skalierung und Upgrades ohne festgelegte Reihenfolge
         ![Screenshot 2024-06-13 222502.png](Screenshot 2024-06-13 222502.png)
