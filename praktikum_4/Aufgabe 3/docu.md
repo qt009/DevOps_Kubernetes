@@ -30,7 +30,8 @@
     - Löschen Sie die Pods (nicht das StatefulSet) und warten Sie, bis die Pods wieder laufen.
         - `kubectl delete pod <pod-name>`
     - Überprüfen Sie nochmals mittels `curl`, dass die nginx Webserver ihre modifizierten Daten ausliefern.
-        - ![Screenshot 2024-06-13 185539.png](Screenshot 2024-06-13 185539.png)
+    
+        ![Screenshot 2024-06-13 185539.png](Screenshot 2024-06-13 185539.png)
 
 4. **Skalierung**
     - Skalieren Sie das StatefulSet auf 4 Replicas, dann auf 1 Replica und schließlich wieder auf 2 Replicas.
@@ -41,6 +42,7 @@
     - Beobachten Sie dabei die geordnete und sequentielle Reihenfolge der Instantiierung und kontrollieren Sie jeweils, welche Daten die nginx Webserver ausliefern.
     - Modifizieren Sie gegebenenfalls die `index.html` der "neuen" Replicas erneut.
     - Änderungen blieben erhalten:
+    
     ![Screenshot 2024-06-13 215022.png](Screenshot 2024-06-13 215022.png)
 
 5. **Update**
@@ -54,6 +56,7 @@
         3. Der alte Pod nginx-854cbf5845-hlwkm beginnt zu terminieren, während einer der neuen Pods (nginx-5dfcd97b66-kb7gp) weiterhin im Status ContainerCreating ist.
         4. Einer der neuen Pods (nginx-5dfcd97b66-kb7gp) ist jetzt vollständig im Status Running, während der andere neue Pod (nginx-5dfcd97b66-rrt28) noch im Status ContainerCreating ist.
         5. Beide neuen Pods (nginx-5dfcd97b66-kb7gp und nginx-5dfcd97b66-rrt28) sind nun vollständig im Status Running. Der alte Pod nginx-854cbf5845-hlwkm wurde terminiert und entfernt.
+
         ![Screenshot 2024-06-13 221012.png](Screenshot 2024-06-13 221012.png)
 
         StatefulSets:
@@ -64,6 +67,7 @@
     - Unterschiede zwischen StatefulSet und Deployment:
         - StatefulSet: Beibehaltung der Pod-Identität und stabiler Speicher
         - Deployment: Flexible Skalierung und Upgrades ohne festgelegte Reihenfolge
+
         ![Screenshot 2024-06-13 222502.png](Screenshot 2024-06-13 222502.png)
 
 6. **Key Learnings:**
