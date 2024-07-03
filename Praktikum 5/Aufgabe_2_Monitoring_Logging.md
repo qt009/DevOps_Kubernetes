@@ -75,3 +75,23 @@ Implementierung eines Proof-of-Concept für die Überwachung der Applikations-Pe
 - Detaillierte Darstellung des Monitoring- und Logging-Konzeptes.
 - Demonstration des Prototyps inklusive Live-Demo der Dashboards und Alerts.
 - Begründung der gewählten Technologien und Architekturen.
+
+
+### Technicher Durchstich
+1. Helm installiert
+   - $ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+   - $ chmod 700 get_helm.sh
+   - $ ./get_helm.sh
+2. Helm Repositories für Grafana und Prometheus-Community geadded
+   - $ helm repo add grafana https://grafana.github.io/helm-charts
+   - $ helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+   - $ helm repo update
+3.Prometheus über [Kube Prometheus Stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) Helm Chart installiert
+   - beinhaltet bereits Prometheus, Alertmanager und Grafana (sowie Dashboards)
+4. Services Port forwarden
+   - $ kubectl port-forward -n metrics svc/prometheus-kube-prometheus-prometheus 9090:9090
+   - $ kubectl port-forward -n metrics svc/prometheus-grafana 3000:80
+5. Per SSH local Port forwarding auf Grafana Dashboard zugreifen
+   - ssh -L \<Lokaler Port\>:127.0.0.1:\<Service Port\> max@\<ControlPlaneIP\>
+6. Alerting eingerichtet
+   - Wenn mehr als 9 Pods im Namespace Kubermates laufen gibt es eine Discord Nachricht (Testweise)
