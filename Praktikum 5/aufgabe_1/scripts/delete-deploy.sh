@@ -13,7 +13,6 @@ declare -a yaml_files=(
   "db-migration-job.yaml"
   "pv.yaml"
   "db.yaml"
-  "ingress.yaml"
   "services.yaml"
   "pv-pvc-snapshot.yaml"
   "snapshot-script.yaml"
