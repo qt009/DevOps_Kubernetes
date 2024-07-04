@@ -1,0 +1,43 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: db-snapshot
+  namespace: kubermates
+spec:
+  schedule: "0 2 * * *"  # Runs daily at 2 AM
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: backup-node
+                    operator: In
+                    values:
+                    - "true"
+          containers:
+          - name: db-snapshot
+            image: mongo:4.4
+            command: ["/bin/sh", "-c", "sh /scripts/snapshot-db.sh"]
+            volumeMounts:
+            - name: script-volume
+              mountPath: /scripts
+            - name: snapshot-volume
+              mountPath: /snapshots
+            - name: mongo-secrets
+              mountPath: /etc/mongo-secrets
+              readOnly: true
+          restartPolicy: OnFailure
+          volumes:
+          - name: script-volume
+            configMap:
+              name: db-snapshot-script
+          - name: snapshot-volume
+            persistentVolumeClaim:
+              claimName: pvc-snapshot
+          - name: mongo-secrets
+            secret:
+              secretName: web-app-secrets

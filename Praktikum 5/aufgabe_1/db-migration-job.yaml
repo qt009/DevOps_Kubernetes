@@ -1,0 +1,35 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  namespace: kubermates
+  name: db-migration
+spec:
+  template:
+    spec:
+      containers:
+      - name: db-migration
+        image: mongo:4.4
+        command: ["/bin/sh", "-c", "sh /scripts/migrate-db.sh"]
+        volumeMounts:
+        - name: script-volume
+          mountPath: /scripts
+        - name: mongo-secrets
+          mountPath: /etc/mongo-secrets
+          readOnly: true
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "
+                while [[ $(kubectl get jobs -n kubermates db-init -o 'jsonpath={.status.succeeded}') != '1' ]]; do
+                  echo 'Waiting for db-init job to complete...'
+                  sleep 5
+                done
+              "]
+      restartPolicy: OnFailure
+      volumes:
+      - name: script-volume
+        configMap:
+          name: db-migration-script
+      - name: mongo-secrets
+        secret:
+          secretName: web-app-secrets

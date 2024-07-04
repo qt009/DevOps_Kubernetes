@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-snapshot-script
+  namespace: kubermates
+data:
+  snapshot-db.sh: |
+    #!/bin/bash
+
+    TIMESTAMP=$(date +%F_%T)
+    BACKUP_PATH="/snapshots/mongo-backup-$TIMESTAMP"
+
+    # MongoDB credentials
+    MONGO_INITDB_ROOT_USERNAME=$(cat /etc/mongo-secrets/MONGO_INITDB_ROOT_USERNAME)
+    MONGO_INITDB_ROOT_PASSWORD=$(cat /etc/mongo-secrets/MONGO_INITDB_ROOT_PASSWORD)
+
+    # Create a backup
+    mongodump --host mongodb-service --username "$MONGO_INITDB_ROOT_USERNAME" --password "$MONGO_INITDB_ROOT_PASSWORD" --authenticationDatabase "admin" --out "$BACKUP_PATH"
+
+    # Print the location of the backup
+    echo "Backup saved to $BACKUP_PATH"

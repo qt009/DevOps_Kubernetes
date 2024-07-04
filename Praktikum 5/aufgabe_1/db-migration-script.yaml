@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-migration-script
+  namespace: kubermates
+data:
+  migrate-db.sh: |
+    #!/bin/bash
+
+    # MongoDB credentials
+    MONGO_INITDB_ROOT_USERNAME=$(cat /etc/mongo-secrets/MONGO_INITDB_ROOT_USERNAME)
+    MONGO_INITDB_ROOT_PASSWORD=$(cat /etc/mongo-secrets/MONGO_INITDB_ROOT_PASSWORD)
+
+    # Wait for MongoDB to be ready
+    until mongo --host mongodb-service --username "$MONGO_INITDB_ROOT_USERNAME" --password "$MONGO_INITDB_ROOT_PASSWORD" --authenticationDatabase "admin" --eval "print(\"waited for connection\")"
+    do
+      echo "Waiting for MongoDB to be ready..."
+      sleep 5
+    done
+
+    # Apply migrations
+    mongo mongodb-service:27017/mydb --username "$MONGO_INITDB_ROOT_USERNAME" --password "$MONGO_INITDB_ROOT_PASSWORD" --authenticationDatabase "admin" --eval '
+      db.createCollection("users");
+      db.users.createIndex({ "name": 1 }, { unique: true });
+    '

@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  namespace: kubermates
+  name: db-init
+spec:
+  template:
+    spec:
+      containers:
+      - name: db-init
+        image: mongo:4.4
+        command: ["/bin/sh", "-c", "sh /scripts/init-db.sh"]
+        volumeMounts:
+        - name: script-volume
+          mountPath: /scripts
+        - name: mongo-secrets
+          mountPath: /etc/mongo-secrets
+          readOnly: true
+      restartPolicy: OnFailure
+      volumes:
+      - name: script-volume
+        configMap:
+          name: db-init-script
+      - name: mongo-secrets
+        secret:
+          secretName: web-app-secrets

@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: snapshot-access-pod
+  namespace: kubermates
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: backup-node
+            operator: In
+            values:
+            - "true"
+  containers:
+  - name: debug-container
+    image: busybox
+    command: ["sleep", "3600"]
+    volumeMounts:
+    - name: snapshot-volume
+      mountPath: /snapshots
+  volumes:
+  - name: snapshot-volume
+    persistentVolumeClaim:
+      claimName: pvc-snapshot
+  restartPolicy: Never

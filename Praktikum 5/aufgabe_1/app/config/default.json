@@ -1,0 +1,4 @@
+{
+  "MONGO_URI": "mongodb://mongodb-service:27017/mydatabase"
+}
+
