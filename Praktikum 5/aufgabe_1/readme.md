@@ -34,14 +34,19 @@ cd <repository-directory>
 Build the Docker image for the web app:
 
 ```bash
-docker build -t registry.code.fbi.h-da.de/kubermates/devops-kubernetes/web-app:v1.2 .
-docker push registry.code.fbi.h-da.de/kubermates/devops-kubernetes/web-app:v1.2
+docker build -t registry.code.fbi.h-da.de/kubermates/devops-kubernetes/<optional-image-name>:<optional-tag> .
+bsp: docker build -t registry.code.fbi.h-da.de/kubermates/devops-kubernetes/web-app:v1.4 .
+docker push registry.code.fbi.h-da.de/kubermates/devops-kubernetes/web-app:v1.4
 ```
+
+![image build instructions](../../../images/documentation/prak_5/image-registry.png)
 
 ### 3. Apply Kubernetes Manifests
 
 We have a handy shell script that applies all the necessary Kubernetes manifests for you. The script will apply the ConfigMaps, Secrets, Deployments, StatefulSets, Services, and RBAC configurations.
 Also if you need to for any reason to re-deploy or simply delete the deploy, we have prepared a script for that as well. Both scripts are in scripts folder.
+
+Side note: please do make sure that the image name that is used in the app.yaml is consistent with the name you've assigned, otherwise the app can't pull the image...
 
 **Name of the deployment script:** `deploy.sh`
 **Name of the deletion script:** `delete-deploy.sh`
