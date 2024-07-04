@@ -1,15 +1,27 @@
+# Namespaces
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kubermates
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kubermates-low-level
+
 # Service Accounts
+---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: visitor-sa
-  namespace: kubermates
+  namespace: kubermates-low-level
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: test-team-sa
-  namespace: kubermates
+  namespace: kubermates-low-level
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -17,30 +29,32 @@ metadata:
   name: dev-team-sa
   namespace: kubermates
 
-# Roles
+# Roles for kubermates-low-level namespace
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  namespace: kubermates
+  namespace: kubermates-low-level
   name: visitor-role
 rules:
-- apiGroups: ["apps"]
-  resources: ["deployments"]
-  verbs: ["get", "watch", "list"]
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    verbs: ["get", "watch", "list"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  namespace: kubermates
+  namespace: kubermates-low-level
   name: test-team-role
 rules:
-- apiGroups: ["apps"]
-  resources: ["deployments"]
-  verbs: ["get", "watch", "list", "create", "update"]
-- apiGroups: [""]
-  resources: ["configmaps"]
-  verbs: ["get", "watch", "list", "create", "update"]
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    verbs: ["get", "watch", "list", "create", "update"]
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get", "watch", "list", "create", "update"]
+
+# Roles for kubermates namespace
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -48,24 +62,24 @@ metadata:
   namespace: kubermates
   name: dev-team-role
 rules:
-- apiGroups: ["apps"]
-  resources: ["deployments"]
-  verbs: ["*"]
-- apiGroups: [""]
-  resources: ["configmaps", "secrets"]
-  verbs: ["*"]
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    verbs: ["*"]
+  - apiGroups: [""]
+    resources: ["configmaps", "secrets"]
+    verbs: ["*"]
 
-# RoleBindings
+# RoleBindings for kubermates-low-level namespace
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: visitor-rolebinding
-  namespace: kubermates
+  namespace: kubermates-low-level
 subjects:
-- kind: ServiceAccount
-  name: visitor-sa
-  namespace: kubermates
+  - kind: ServiceAccount
+    name: visitor-sa
+    namespace: kubermates-low-level
 roleRef:
   kind: Role
   name: visitor-role
@@ -75,15 +89,17 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: test-team-rolebinding
-  namespace: kubermates
+  namespace: kubermates-low-level
 subjects:
-- kind: ServiceAccount
-  name: test-team-sa
-  namespace: kubermates
+  - kind: ServiceAccount
+    name: test-team-sa
+    namespace: kubermates-low-level
 roleRef:
   kind: Role
   name: test-team-role
   apiGroup: rbac.authorization.k8s.io
+
+# RoleBindings for kubermates namespace
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -91,10 +107,90 @@ metadata:
   name: dev-team-rolebinding
   namespace: kubermates
 subjects:
-- kind: ServiceAccount
-  name: dev-team-sa
-  namespace: kubermates
+  - kind: ServiceAccount
+    name: dev-team-sa
+    namespace: kubermates
 roleRef:
   kind: Role
   name: dev-team-role
   apiGroup: rbac.authorization.k8s.io
+
+# ResourceQuota for kubermates-low-level namespace
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: kubermates-low-level-quota
+  namespace: kubermates-low-level
+spec:
+  hard:
+    pods: "5"
+    requests.cpu: "2"
+    requests.memory: "8Gi"
+    limits.cpu: "4"
+    limits.memory: "16Gi"
+    configmaps: "5"
+    secrets: "5"
+
+# ResourceQuota for kubermates namespace
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: kubermates-quota
+  namespace: kubermates
+spec:
+  hard:
+    pods: "10"
+    requests.cpu: "4"
+    requests.memory: "16Gi"
+    limits.cpu: "8"
+    limits.memory: "32Gi"
+    configmaps: "10"
+    secrets: "10"
+
+# LimitRange for kubermates-low-level namespace
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: kubermates-low-level-limits
+  namespace: kubermates-low-level
+spec:
+  limits:
+    - max:
+        cpu: "1"
+        memory: "2Gi"
+      min:
+        cpu: "50m"
+        memory: "128Mi"
+      default:
+        cpu: "250m"
+        memory: "512Mi"
+      defaultRequest:
+        cpu: "100m"
+        memory: "256Mi"
+      type: Container
+
+# LimitRange for kubermates namespace
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: kubermates-limits
+  namespace: kubermates
+spec:
+  limits:
+    - max:
+        cpu: "2"
+        memory: "4Gi"
+      min:
+        cpu: "100m"
+        memory: "256Mi"
+      default:
+        cpu: "500m"
+        memory: "1Gi"
+      defaultRequest:
+        cpu: "200m"
+        memory: "512Mi"
+      type: Container

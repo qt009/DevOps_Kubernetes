@@ -11,6 +11,7 @@ Hey there! This project is a simple web app running on Kubernetes. It's a basic 
 - **Persistent Storage**: MongoDB uses a StatefulSet with persistent storage.
 - **Config and Secrets**: Uses ConfigMaps for configuration and Secrets for sensitive data.
 - **Access Control**: Define accessibility for users or groups using ServiceAccounts, Role and RoleBinding
+- **Resource Limitation**: Control the amount of computing resource that can be used
 ## What You Need
 
 - A Kubernetes cluster
@@ -77,5 +78,9 @@ Use the web interface to add, list, and delete users. The app connects to MongoD
 - **ConfigMaps**: Store non-sensitive settings like environment and database connection details.
 - **Secrets**: Securely store sensitive data like passwords.
 - **RBAC**: Role Based Access Control
+- **Kubernetes Resource Management**
+  - Use **`LimitRange`** to enforce resource constraints on individual containers.
+  - Use **`ResourceQuota`** to enforce overall resource constraints on a namespace.
+
 
 

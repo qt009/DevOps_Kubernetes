@@ -60,12 +60,16 @@ wie man die App baut: siehe Applikation readme Datei
 - **PostStart Hook**: Waits for the `db-init` job to complete before starting.
 
 ### `rbac.yaml`
+
 - There are 3 levels of access controls:
   - **visitor**: limited read access to deployments
   - **test-team**: limited read and deployment access to deployments and configmaps
   - **dev-team**: full access to every activity
-- For the scope of this project all 3 of these levels are in the same namespace **_kubermates_**
+- Define 2 kinds of namespace:
+  - **kubermates** (for visitor & test-team)
+  - **kubermates-low-level** (for dev-team)
 - **_ServiceAccount_**, **_Role_** and **_RoleBinding_** are defined within the file
+- **_ResourceQuota_** and **_LimitRange_** are also defined accordingly to the namespaces
 
 ### `snapshot-script.yaml`
 - **ConfigMap**: Contains the script for taking MongoDB snapshots (`snapshot-db.sh`).
