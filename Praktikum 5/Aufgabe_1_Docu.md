@@ -59,6 +59,14 @@ wie man die App baut: siehe Applikation readme Datei
 - **Command**: Runs the `migrate-db.sh` script.
 - **PostStart Hook**: Waits for the `db-init` job to complete before starting.
 
+### `rbac.yaml`
+- There are 3 levels of access controls:
+  - **visitor**: limited read access to deployments
+  - **test-team**: limited read and deployment access to deployments and configmaps
+  - **dev-team**: full access to every activity
+- For the scope of this project all 3 of these levels are in the same namespace **_kubermates_**
+- **_ServiceAccount_**, **_Role_** and **_RoleBinding_** are defined within the file
+
 ### `snapshot-script.yaml`
 - **ConfigMap**: Contains the script for taking MongoDB snapshots (`snapshot-db.sh`).
 - **Script Content**:

@@ -2,7 +2,7 @@
 
 ## Overview
 
-Hey there! This project is a simple web app running on Kubernetes. It's a basic user management app where you can add, list, and delete users. It's backed by a MongoDB database, and it showcases some cool Kubernetes features like Deployments, StatefulSets, Jobs, Services, ConfigMaps, and Secrets.
+Hey there! This project is a simple web app running on Kubernetes. It's a basic user management app where you can add, list, and delete users. It's backed by a MongoDB database, and it showcases some cool Kubernetes features like Deployments, StatefulSets, Jobs, Services, RBAC, ConfigMaps, and Secrets.
 
 ## Features
 
@@ -10,7 +10,7 @@ Hey there! This project is a simple web app running on Kubernetes. It's a basic 
 - **Scalable**: Easily scale the web app with Kubernetes Deployments.
 - **Persistent Storage**: MongoDB uses a StatefulSet with persistent storage.
 - **Config and Secrets**: Uses ConfigMaps for configuration and Secrets for sensitive data.
-
+- **Access Control**: Define accessibility for users or groups using ServiceAccounts, Role and RoleBinding
 ## What You Need
 
 - A Kubernetes cluster
@@ -35,7 +35,7 @@ Build the Docker image for the web app:
 
 ```bash
 docker build -t registry.code.fbi.h-da.de/kubermates/devops-kubernetes/<optional-image-name>:<optional-tag> .
-bsp: docker build -t registry.code.fbi.h-da.de/kubermates/devops-kubernetes/web-app:v1.4 .
+   [EXAMPLE] docker build -t registry.code.fbi.h-da.de/kubermates/devops-kubernetes/web-app:v1.4 .
 docker push registry.code.fbi.h-da.de/kubermates/devops-kubernetes/web-app:v1.4
 ```
 
@@ -49,6 +49,7 @@ Also if you need to for any reason to re-deploy or simply delete the deploy, we 
 Side note: please do make sure that the image name that is used in the app.yaml is consistent with the name you've assigned, otherwise the app can't pull the image...
 
 **Name of the deployment script:** `deploy.sh`
+
 **Name of the deletion script:** `delete-deploy.sh`
 Make the script executable and run it:
 
@@ -75,5 +76,6 @@ Use the web interface to add, list, and delete users. The app connects to MongoD
 
 - **ConfigMaps**: Store non-sensitive settings like environment and database connection details.
 - **Secrets**: Securely store sensitive data like passwords.
+- **RBAC**: Role Based Access Control
 
 
